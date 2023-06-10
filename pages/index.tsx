@@ -12,12 +12,12 @@ const confettiConfig = {
   decay: 0.91,
 };
 
+const RPC_PROVIDER_API_KEY = process.env.NEXT_PUBLIC_RPC_PROVIDER_API_KEY || '';
+const BIG_FAT_SECRET = process.env.NEXT_PUBLIC_BIG_FAT_SECRET || '';
+
 export default function Home() {
   const [events, setEvents] = useState([] as any);
   const [confetti, setConfetti] = useState(false);
-
-  const RPC_PROVIDER_API_KEY = process.env.NEXT_PUBLIC_RPC_PROVIDER_API_KEY || '';
-  const BIG_FAT_SECRET = process.env.NEXT_PUBLIC_BIG_FAT_SECRET || '';
 
   const sendTweet = async (twitterHandle: string) => {
     const token = createHmac('sha256', BIG_FAT_SECRET).update(twitterHandle).digest('hex');
@@ -29,17 +29,9 @@ export default function Home() {
       }
     });
     const data = await response.json();
-    console.log(data);
+    console.log("Tweet Request Submited", data);
   };
 
-  const sendTestTweet = () => {
-    const latestEvent = events[events.length - 1];
-    if (latestEvent) {
-      sendTweet(latestEvent.args.twitterHandle);
-    } else {
-      console.log("No event available for the test tweet");
-    }
-  };
 
   useEffect(() => {
     const webSocketClient = createPublicClient({
@@ -58,7 +50,7 @@ export default function Home() {
         abi: FOUNDRY_COURSE_CONTRACT_ABI,
         eventName: 'ChallengeSolved',
         onLogs: (logs: any) => {
-          console.log(logs);
+          console.log("New Challenge Solved Event!", logs);
           const { args: { solver, challenge, twitterHandle }, eventName } = logs[0];
           setConfetti(true);
           setTimeout(() => setConfetti(false), 5000);
@@ -110,7 +102,6 @@ export default function Home() {
           Listening for contract events<span className="ellipsis"></span>
         </div>
         <div className="overflow-y-auto h-[600px] px-4 py-6">
-        <button onClick={sendTestTweet} className="mt-4 p-2 bg-green-500 text-white">Send Test Tweet</button>
           {[...events].reverse().map((event: any, index: any) => {
             const { args: { solver, challenge, twitterHandle }, transactionHash } = event;
             return (

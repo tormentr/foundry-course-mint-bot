@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const response = await axios({
             url: request_data.url,
             method: request_data.method,
-            data: {text: `Congrats ${twitterHandle} on your mint.  You've solved the Ultimate, Learn Blockchain Development, Solidity, AI-Powered Smart Contract Course | Foundry Edition Challenge!!  Check out the course by @PatrickAlphaC at https://youtu.be/umepbfKp5rI`},
+            data: {text: `🎉Congrats ${twitterHandle}🎉  You've solved the Ultimate, Learn Blockchain Development, Solidity, AI-Powered Smart Contract Course | Foundry Edition Challenge!!  Check out the course by @PatrickAlphaC https://youtu.be/umepbfKp5rI`},
             headers: oauth.toHeader(oauth.authorize(request_data, { key: accessToken, secret: tokenSecret })),
         } as AxiosRequestConfig);
 
