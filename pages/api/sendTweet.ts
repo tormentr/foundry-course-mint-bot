@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios, { AxiosRequestConfig } from 'axios';
-import * as crypto from 'crypto';
+import crypto from 'crypto';
 import OAuth from 'oauth-1.0a';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

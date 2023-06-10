@@ -27,7 +27,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setConfetti(true);
     const webSocketClient = createPublicClient({
       chain: arbitrum,
       transport: webSocket(`wss://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
