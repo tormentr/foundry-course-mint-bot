@@ -4,32 +4,20 @@ import crypto from 'crypto';
 import OAuth from 'oauth-1.0a';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const consumerKey = process.env.TWITTER_CONSUMER_KEY;
-    const consumerSecret = process.env.TWITTER_CONSUMER_SECRET;
-    const accessToken = process.env.TWITTER_ACCESS_TOKEN;
-    const tokenSecret = process.env.TWITTER_TOKEN_SECRET;
-    const appDomain = process.env.APP_DOMAIN; // Add your frontend domain here
+    const consumerKey = process.env.TWITTER_CONSUMER_KEY || '';
+    const consumerSecret = process.env.TWITTER_CONSUMER_SECRET || '';
+    const accessToken = process.env.TWITTER_ACCESS_TOKEN || '';
+    const tokenSecret = process.env.TWITTER_TOKEN_SECRET || '';
+    const BIG_FAT_SECRET = process.env.BIG_FAT_SECRET || ''
+    const authToken = req.headers.authorization?.split(' ')[1];
 
-    // Ensure requests are coming from your frontend
-    if (req.headers.origin !== appDomain && req.headers.referer !== appDomain) {
-        res.status(403).json({ error: 'Access denied' });
-        return;
-    }
+    const { twitterHandle } = JSON.parse(req.body);
 
-    let twitterHandle = req.body;
-
-    // add '@' at beginning if not present
-    if (twitterHandle != undefined && !twitterHandle.startsWith('@')) {
-      twitterHandle = '@' + twitterHandle;
-    } else {
-        res.status(500).json({ error: 'Twitter handle not set' });
-        return;
-    }
-
-    if (!consumerKey || !consumerSecret || !accessToken || !tokenSecret) {
-        res.status(500).json({ error: 'Environment variables not set' });
-        return;
-    }
+     const serverToken = crypto.createHmac('sha256', BIG_FAT_SECRET).update(twitterHandle).digest('hex');
+     if(authToken !== serverToken) {
+       res.status(403).json({ error: 'Invalid token' });
+       return;
+     }
 
     const oauth = new OAuth({
         consumer: { key: consumerKey, secret: consumerSecret },

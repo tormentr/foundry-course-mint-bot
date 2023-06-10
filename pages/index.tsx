@@ -3,6 +3,7 @@ import { createPublicClient, webSocket, http } from 'viem';
 import { arbitrum } from 'viem/chains';
 import { FOUNDRY_COURSE_CONTRACT_ADDRESS, FOUNDRY_COURSE_CONTRACT_ABI } from '../constants';
 import Confetti from 'react-dom-confetti';
+import { createHmac } from 'crypto';
 
 const confettiConfig = {
   spread: 360,
@@ -16,12 +17,17 @@ export default function Home() {
   const [confetti, setConfetti] = useState(false);
 
   const RPC_PROVIDER_API_KEY = process.env.NEXT_PUBLIC_RPC_PROVIDER_API_KEY || '';
+  const BIG_FAT_SECRET = process.env.NEXT_PUBLIC_BIG_FAT_SECRET || '';
 
   const sendTweet = async (twitterHandle: string) => {
+    const token = createHmac('sha256', BIG_FAT_SECRET).update(twitterHandle).digest('hex');
     const response = await fetch('/api/sendTweet', {
       method: 'POST',
-      body: twitterHandle
-    })
+      body: JSON.stringify({ twitterHandle }),
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     const data = await response.json();
     console.log(data);
   };
@@ -75,7 +81,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center pt-12">
-        <Confetti active={confetti} config={confettiConfig} />
+      <Confetti active={confetti} config={confettiConfig} />
       <div className="w-full md:max-w-2xl mx-4">
         <div className="flex justify-around mb-4">
           <a href="https://twitter.com/PatrickAlphaC" target="_blank" rel="noreferrer" className="flex flex-col items-center">
