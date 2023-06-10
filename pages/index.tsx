@@ -101,7 +101,7 @@ export default function Home() {
           Listening for contract events<span className="ellipsis"></span>
         </div>
         <div className="overflow-y-auto h-[600px] px-4 py-6">
-          {events.map((event: any, index: any) => {
+          {[...events].reverse().map((event: any, index: any) => {
             const { args: { solver, challenge, twitterHandle }, transactionHash } = event;
             return (
               <a key={index} href={`https://arbiscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer" className="block mb-4 p-4 bg-teal-500 rounded-md overflow-hidden">
