@@ -110,7 +110,7 @@ export default function Home() {
       </div>
       <footer className="w-full mt-auto py-8 bg-gray-800">
         <div className="flex items-center justify-center">
-          <a href="https://github.com/markeljan/foundry-mint-bot" target="_blank" rel="noreferrer" className="flex items-center space-x-2 text-white text-lg">
+          <a href="https://github.com/markeljan/foundry-course-mint-bot" target="_blank" rel="noreferrer" className="flex items-center space-x-2 text-white text-lg">
             <img src="/github.png" alt="GitHub" className="w-8 h-8" />
             <span>Check out the source code on GitHub!</span>
           </a>
