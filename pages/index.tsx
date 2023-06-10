@@ -32,6 +32,15 @@ export default function Home() {
     console.log(data);
   };
 
+  const sendTestTweet = () => {
+    const latestEvent = events[events.length - 1];
+    if (latestEvent) {
+      sendTweet(latestEvent.args.twitterHandle);
+    } else {
+      console.log("No event available for the test tweet");
+    }
+  };
+
   useEffect(() => {
     const webSocketClient = createPublicClient({
       chain: arbitrum,
@@ -101,6 +110,7 @@ export default function Home() {
           Listening for contract events<span className="ellipsis"></span>
         </div>
         <div className="overflow-y-auto h-[600px] px-4 py-6">
+        <button onClick={sendTestTweet} className="mt-4 p-2 bg-green-500 text-white">Send Test Tweet</button>
           {[...events].reverse().map((event: any, index: any) => {
             const { args: { solver, challenge, twitterHandle }, transactionHash } = event;
             return (
