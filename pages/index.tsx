@@ -20,6 +20,13 @@ export default function Home() {
   const [confetti, setConfetti] = useState(false);
 
   const sendTweet = async (twitterHandle: string) => {
+    if (!twitterHandle) {
+      console.log('Twitter handle is undefined or empty');
+      return;
+    }
+    if (!twitterHandle.startsWith('@')) {
+      twitterHandle = '@' + twitterHandle;
+    }
     const token = createHmac('sha256', BIG_FAT_SECRET).update(twitterHandle).digest('hex');
     const response = await fetch('/api/sendTweet', {
       method: 'POST',
@@ -29,7 +36,7 @@ export default function Home() {
       }
     });
     const data = await response.json();
-    console.log("Tweet Request Submited", data);
+    console.log("Tweet Submitted", data);
   };
 
 
