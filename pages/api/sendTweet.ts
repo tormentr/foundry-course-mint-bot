@@ -8,10 +8,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const consumerSecret = process.env.TWITTER_CONSUMER_SECRET;
     const accessToken = process.env.TWITTER_ACCESS_TOKEN;
     const tokenSecret = process.env.TWITTER_TOKEN_SECRET;
-    const frontendDomain = process.env.FRONTEND_DOMAIN; // Add your frontend domain here
+    const appDomain = process.env.APP_DOMAIN; // Add your frontend domain here
 
     // Ensure requests are coming from your frontend
-    if (req.headers.origin !== frontendDomain && req.headers.referer !== frontendDomain) {
+    if (req.headers.origin !== appDomain && req.headers.referer !== appDomain) {
         res.status(403).json({ error: 'Access denied' });
         return;
     }
