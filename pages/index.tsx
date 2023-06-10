@@ -1,10 +1,20 @@
 import { useEffect, useState } from 'react';
 import { createPublicClient, webSocket, http } from 'viem';
 import { arbitrum } from 'viem/chains';
-import {FOUNDRY_COURSE_CONTRACT_ADDRESS, FOUNDRY_COURSE_CONTRACT_ABI} from '../constants';
+import { FOUNDRY_COURSE_CONTRACT_ADDRESS, FOUNDRY_COURSE_CONTRACT_ABI } from '../constants';
+import Confetti from 'react-dom-confetti';
+
+const confettiConfig = {
+  spread: 360,
+  startVelocity: 40,
+  elementCount: 600,
+  decay: 0.91,
+};
 
 export default function Home() {
   const [events, setEvents] = useState([] as any);
+  const [confetti, setConfetti] = useState(false);
+
   const RPC_PROVIDER_API_KEY = process.env.NEXT_PUBLIC_RPC_PROVIDER_API_KEY || '';
 
   const sendTweet = async (twitterHandle: string) => {
@@ -14,15 +24,16 @@ export default function Home() {
     })
     const data = await response.json();
     console.log(data);
-  }
+  };
 
   useEffect(() => {
+    setConfetti(true);
     const webSocketClient = createPublicClient({
       chain: arbitrum,
       transport: webSocket(`wss://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
     });
 
-    const httpClient = createPublicClient({ 
+    const httpClient = createPublicClient({
       chain: arbitrum,
       transport: http(`https://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
     })
@@ -34,7 +45,9 @@ export default function Home() {
         eventName: 'ChallengeSolved',
         onLogs: (logs: any) => {
           console.log(logs);
-          const { args: { solver, challenge, twitterHandle }, eventName } = logs[0]
+          const { args: { solver, challenge, twitterHandle }, eventName } = logs[0];
+          setConfetti(true);
+          setTimeout(() => setConfetti(false), 5000);
           setEvents((prevEvents: any) => [...prevEvents, logs[0]]);
           sendTweet(twitterHandle);
         },
@@ -47,13 +60,13 @@ export default function Home() {
 
     async function getPreviousEvents() {
       const filter = await httpClient.createContractEventFilter({
-        abi: FOUNDRY_COURSE_CONTRACT_ABI, 
+        abi: FOUNDRY_COURSE_CONTRACT_ABI,
         address: FOUNDRY_COURSE_CONTRACT_ADDRESS,
         eventName: 'ChallengeSolved',
-        fromBlock: 99726902n,
+        fromBlock: 97795932n,
       })
 
-      const fetchedEvents = await httpClient.getFilterLogs({filter});
+      const fetchedEvents = await httpClient.getFilterLogs({ filter });
       setEvents(fetchedEvents);
     }
 
@@ -63,22 +76,25 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center pt-12">
+        <Confetti active={confetti} config={confettiConfig} />
       <div className="w-full md:max-w-2xl mx-4">
-          <div className="flex justify-around mb-4">
+        <div className="flex justify-around mb-4">
           <a href="https://twitter.com/PatrickAlphaC" target="_blank" rel="noreferrer" className="flex flex-col items-center">
-              <img src="/patrick.png" alt="PatrickAlphaC" className="w-20 h-20 rounded-full"/>
-              <span>PatrickAlphaC</span>
-            </a>
-            <a href="https://twitter.com/foundrymintbot" target="_blank" rel="noreferrer" className="flex flex-col items-center">
-              <img src="/mintfrog.png" alt="Minting Bot" className="w-20 h-20 rounded-full"/>
-              <span>NFT Mint Tracker</span>
-            </a>
-            <a href="https://twitter.com/0xMarkeljan" target="_blank" rel="noreferrer" className="flex flex-col items-center">
-              <img src="/markeljan.png" alt="0xMarkeljan" className="w-20 h-20 rounded-full"/>
-              <span>0xMarkeljan</span>
-            </a>
+            <img src="/patrick.png" alt="PatrickAlphaC" className="w-20 h-20 rounded-full" />
+            <span>PatrickAlphaC</span>
+          </a>
+          <a href="https://twitter.com/foundrymintbot" target="_blank" rel="noreferrer" className="flex flex-col items-center">
+            <img src="/mintfrog.png" alt="Minting Bot" className="w-20 h-20 rounded-full" />
+            <span>NFT Mint Tracker</span>
+          </a>
+          <a href="https://twitter.com/0xMarkeljan" target="_blank" rel="noreferrer" className="flex flex-col items-center">
+            <img src="/markeljan.png" alt="0xMarkeljan" className="w-20 h-20 rounded-full" />
+            <span>0xMarkeljan</span>
+          </a>
         </div>
-        <div className="text-4xl text-center py-4 bg-blue-800">Listening for contract events...</div>
+        <div className="text-4xl text-start px-8 py-4 bg-blue-800">
+          Listening for contract events<span className="ellipsis"></span>
+        </div>
         <div className="overflow-y-auto h-[600px] px-4 py-6">
           {events.map((event: any, index: any) => {
             const { args: { solver, challenge, twitterHandle }, transactionHash } = event;
