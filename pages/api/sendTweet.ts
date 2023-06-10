@@ -8,15 +8,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const consumerSecret = process.env.TWITTER_CONSUMER_SECRET;
     const accessToken = process.env.TWITTER_ACCESS_TOKEN;
     const tokenSecret = process.env.TWITTER_TOKEN_SECRET;
+    const frontendDomain = process.env.FRONTEND_DOMAIN; // Add your frontend domain here
 
-    let twitterHandle  = req.body;
-
-    // add '@' at beginning if not present
-    if (twitterHandle && !twitterHandle.startsWith('@')) {
-      twitterHandle = '@' + twitterHandle;
+    // Ensure requests are coming from your frontend
+    if (req.headers.origin !== frontendDomain && req.headers.referer !== frontendDomain) {
+        res.status(403).json({ error: 'Access denied' });
+        return;
     }
 
-    if (!twitterHandle) {
+    let twitterHandle = req.body;
+
+    // add '@' at beginning if not present
+    if (twitterHandle != undefined && !twitterHandle.startsWith('@')) {
+      twitterHandle = '@' + twitterHandle;
+    } else {
         res.status(500).json({ error: 'Twitter handle not set' });
         return;
     }
