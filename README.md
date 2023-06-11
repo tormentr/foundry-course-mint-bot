@@ -9,7 +9,7 @@ This project is made up of two main parts:
 
 ## Project Overview
 
-The project was inspired by a [task](https://github.com/PatrickAlphaC/foundry-full-course-f23/issues/13) proposed by PatrickAlphaC. The task was to create a Twitter bot that congratulates people when they mint an NFT on the Arbitrum network, with the addition of a website that shows a real-time list of people minting.
+The project was inspired by a [task](https://github.com/Cyfrin/foundry-full-course-f23/issues/13) proposed by PatrickAlphaC. The task was to create a Twitter bot that congratulates people when they mint an NFT on the Arbitrum network, with the addition of a website that shows a real-time list of people minting.
 
 The contract we are listening for events from can be found [here](https://arbiscan.io/address/0x39338138414Df90EC67dC2EE046ab78BcD4F56D9#code).
 
@@ -29,4 +29,4 @@ Feel free to fork this repository, submit issues, or pull requests if you want t
 
 ## License
 
-[MIT](LICENSE)
+[MIT]([LICENSE](https://en.wikipedia.org/wiki/MIT_License))
