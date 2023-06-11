@@ -112,10 +112,18 @@ export default function Home() {
           {[...events].reverse().map((event: any, index: any) => {
             const { args: { solver, challenge, twitterHandle }, transactionHash } = event;
             return (
-              <a key={index} href={`https://arbiscan.io/tx/${transactionHash}`} target="_blank" rel="noreferrer" className="block mb-4 p-4 bg-teal-500 rounded-md overflow-hidden">
-                <div className="font-semibold">Solver: <span className="font-normal">{solver}</span></div>
-                <div className="font-semibold">Challenge: <span className="font-normal">{challenge}</span></div>
-                <div className="font-semibold">Twitter Handle: <span className="font-normal">{twitterHandle}</span></div>
+              <a
+                key={index}
+                href={`https://arbiscan.io/tx/${transactionHash}`}
+                target="_blank"
+                rel="noreferrer"
+                className="block mb-4 p-4 bg-teal-500 rounded-md overflow-hidden"
+              >
+                <div className="scrollable-card-content">
+                  <div className="font-semibold">Solver: <span className="font-normal">{solver}</span></div>
+                  <div className="font-semibold">Challenge: <span className="font-normal">{challenge}</span></div>
+                  <div className="font-semibold">Twitter Handle: <span className="font-normal">{twitterHandle}</span></div>
+                </div>
               </a>
             );
           })}

@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 
+.scrollable-card-content {
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+}
+
+.scrollable-card-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* Listening ... effect */
 @keyframes ellipsis {
     0% {
         content: "";
