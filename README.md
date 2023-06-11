@@ -1,38 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Foundry Course Mint Bot
 
-## Getting Started
+A fun project developed to monitor and celebrate NFT minting on the Arbitrum network.
 
-First, run the development server:
+This project is made up of two main parts:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- **[Frontend Tracker](https://foundry-mints.vercel.app/)** - A web application that listens for contract events in real-time and displays the latest mints.
+- **[Twitter Bot](https://twitter.com/foundrymintbot)** - A bot that tweets congratulations to a user's Twitter handle when they mint an NFT.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Overview
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+The project was inspired by a [task](https://github.com/PatrickAlphaC/foundry-full-course-f23/issues/13) proposed by PatrickAlphaC. The task was to create a Twitter bot that congratulates people when they mint an NFT on the Arbitrum network, with the addition of a website that shows a real-time list of people minting.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+The contract we are listening for events from can be found [here](https://arbiscan.io/address/0x39338138414Df90EC67dC2EE046ab78BcD4F56D9#code).
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Implementation Details
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The Frontend Tracker is built using React and listens for 'ChallengeSolved' events from a specified smart contract. The application displays the address of the solver, the challenge they solved, and their Twitter handle (if available). 
 
-## Learn More
+The Twitter Bot is created using Node.js and communicates with the Twitter API to post a congratulatory message whenever a user mints a new NFT and provides their Twitter handle.
 
-To learn more about Next.js, take a look at the following resources:
+![Frontend Tracker](https://github.com/Cyfrin/foundry-full-course-f23/assets/12901349/84ee315a-98a7-45ec-b35f-ca16bf7b5154)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Twitter Bot](https://github.com/Cyfrin/foundry-full-course-f23/assets/12901349/371c66be-09dd-489c-9def-e81da83a1852)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contribute
 
-## Deploy on Vercel
+Feel free to fork this repository, submit issues, or pull requests if you want to contribute or suggest any improvements. 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[MIT](LICENSE)
